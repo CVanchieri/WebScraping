@@ -23,10 +23,8 @@ import requests
 #     print('----')
 
 ### html webpage ### 
-
 source =requests.get('https://www.datasciencecentral.com').text
 soup = BeautifulSoup(source, 'lxml')
-
 article = soup.find('div', class_='xg_module module_blog indented_content')
 title = article.h2.text
 print('-Title-')
@@ -37,26 +35,54 @@ for post in soup.find_all('div', class_='blogpost vcard'):
     author_image = post.div.span.a.span.img['src']
     author_name = post.p.a.text
     header_text = post.h3.a.text
-
-    print('-Author Image-')
+    
+    print('#######-Blog Post-#######')
+    print('-Content Author Image-')
     print(author_image)
-    print('-Header Text-')
-    print(header_text)
-    print('-Author-')
+    print('-Content Author Name-')
     print(author_name)
+    print('-Content Header Text-')
+    print(header_text)
+    print('-Content Body Image-')
+    try:
+        if post.find('img', class_=['align-full']) is not None:
+            print(post.find('img', class_=['align-full'])['src'])
+    except Exception as e:
+        print('None')
+
+    print('-Content Body Text-')
     body = post.find('div', class_='xg_user_generated')
-    body_text1 = body.select_one('.xg_user_generated p:nth-child(2)')
-    body_text2 = body.select_one('.xg_user_generated p:nth-child(3)')
-    print('-Body Text-')
-    print(body_text1)
-    print(body_text2)
-    print('---')
+    try:
+        if body.select_one('.xg_user_generated li:nth-child(1)').text != '':
+            print(body.select_one('.xg_user_generated li:nth-child(1)').text)
+    except Exception as e:
+        pass  
+    try:
+        if body.select_one('.xg_user_generated li:nth-child(2)').text != '':
+            print(body.select_one('.xg_user_generated li:nth-child(2)').text)
+    except Exception as e:
+        pass  
+    try:
+        if body.select_one('.xg_user_generated p:nth-child(2)').text != '':
+            print(body.select_one('.xg_user_generated p:nth-child(2)').text)
+    except Exception as e:
+        pass   
+    try:
+        if body.select_one('.xg_user_generated p:nth-child(3)').text != '':
+            print(body.select_one('.xg_user_generated p:nth-child(3)').text)
+    except Exception as e:
+        pass
+    try:
+        if body.select_one('.xg_user_generated p:nth-child(4)').text != '':
+            print(body.select_one('.xg_user_generated p:nth-child(4)').text)
+    except Exception as e:
+        pass
+    print('-Contenet Link-')
+    try:
+        if body.find('a', class_=['xj_expandable'])['href'] is not None:
+            print(body.find('a', class_=['xj_expandable'])['href'])
+    except Exception as e:
+        pass
 
-
-
-# for article in soup.find_all('h3', class_='title'): # search for div that includes 'article', returns list of all matches 
-
-#     headline = article.a.text
-#     print(headline)
 
 
